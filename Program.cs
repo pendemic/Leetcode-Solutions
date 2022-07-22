@@ -88,6 +88,7 @@ public class Solution
         int n = nums.Length - 1;
         int majority = n / 2;
         Dictionary<int, int> m = new Dictionary<int, int>();
+        
         foreach (var num in nums)
         {
             if (m.ContainsKey(num))
@@ -108,6 +109,67 @@ public class Solution
         }
         return -1;
     }
+    //Not Completed
+    //public int LongestStrChain(string[] words)
+    //{
+    //    int chainLength = 1;
+    //    string tempString = "";
+    //    foreach (string word in words)
+    //    {
+    //        for (int i = 0; i < word.Length; i++)
+    //        {
+    //            tempString = word.Remove(i, 1);
+    //            for (int j = 0; j < words.Length; j++)
+    //            {
+    //                if (tempString == words[j])
+    //                {
+    //                    Console.WriteLine(words[j] + " " + tempString + " " + chainLength);
+    //                    chainLength++;
+    //                }
+    //            }
+    //            Console.WriteLine(tempString + " " + word);
+    //        }
+    //    }
+    //    return chainLength;
+    //}
+    Dictionary<string, IList<string>> recipeIngredients = new Dictionary<string, IList<string>>();
+    public IList<string> FindAllRecipes(string[] recipes, IList<IList<string>> ingredients, string[] supplies)
+    {
+        IList<string> results = new List<string>();
+        IList<string> supplies2 = new List<string>();
+        IList<string> empty = new List<string>();
+        if (supplies.Length == 0) return empty;
+        foreach (string item in supplies)
+        {
+            supplies2.Add(item);
+        }
+        for (int i = 0; i < recipes.Length; i++)
+        {
+            recipeIngredients.Add(recipes[i], ingredients[i]);
+        }
+        foreach(KeyValuePair<string, IList<string>> ingredient in recipeIngredients)
+        {
+            for (int i = 0; i < ingredient.Value.Count; i++)
+            {
+                for (int j = 0; j < supplies2.Count; j++)
+                {
+                    if (supplies2[j] == ingredient.Value[i])
+                    {
+                        break;
+                    }
+                    if (j == supplies2.Count) break;
+                }
+            }
+            results.Add(ingredient.Key);
+            supplies2.Add(ingredient.Key);
+        }
+        foreach (string item in results)
+        {
+            Console.WriteLine(item);
+        }
+        return results;
+
+    }
     static void Main(string[] args)
     {
         Solution solution = new Solution();
@@ -118,7 +180,19 @@ public class Solution
         //int[] nums1 = new int[] { 1, 2, 3, 0, 0, 0 };
         //int[] nums2 = new int[] { 2, 5, 6 };
         //solution.MergeSrt(nums1, 3, nums2, 3);
-        int[] nums = new int[] { 6, 5, 5 };
-        Console.WriteLine(solution.MajorityElement(nums));
+        //int[] nums = new int[] { 6, 5, 5 };
+        //Console.WriteLine(solution.MajorityElement(nums));
+        //string[] words = new string[] { "xbc", "pcxbcf", "xb", "cxbc", "pcxbc" };
+        //solution.LongestStrChain(words);
+        string[] recipes = new string[] { "bread" };
+        string[] items1 = new string[] { "yeast", "flour" };
+        //string[] items2 = new string[] { "bread", "meat" };
+        //string[] items3 = new string[] { "sandwich", "meat", "bread" };
+        IList<IList<string>> ingredients = new List<IList<string>>();
+        ingredients.Add(items1);
+        //ingredients.Add(items2);
+        //ingredients.Add(items3);
+        string[] supplies = new string[] { "yeast" };
+        solution.FindAllRecipes(recipes, ingredients, supplies);
     }
 }
